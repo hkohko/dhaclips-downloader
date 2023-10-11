@@ -1,12 +1,14 @@
-from yt_dlp import YoutubeDL
-from _constants import Dir
 from collections.abc import Generator
-from random import randint
 from pathlib import Path
+from random import randint
+
+from _constants import Dir
 from dotenv import dotenv_values
+from yt_dlp import YoutubeDL
+
 
 def create_dir():
-    paths = (Dir.DL_DIR, Dir.FFMPEG_DIR)
+    paths = (Dir.DL_DIR, Dir.FFMPEG_DIR, Dir.TEMP_DL_DIR)
     for path in paths:
         if not Path(path).exists():
             Path(path).mkdir()
