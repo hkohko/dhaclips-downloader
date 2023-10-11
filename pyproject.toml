@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "dhaclips-downloader"
+version = "0.0.1"
+description = "a YT video downloader app for clippers."
+authors = ["heko <91366057+hkohko@users.noreply.github.com>"]
+license = "MIT License"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+yt-dlp = "2023.10.7"
+pysimplegui = "4.60.5"
+pre-commit = "^3.4.0"
+python-dotenv = "^1.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
