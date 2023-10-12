@@ -2,11 +2,12 @@ import json
 from collections.abc import Generator
 from pathlib import Path
 
-from _constants import Dir
-from _yt_ops import get_ops
 from dotenv import dotenv_values
 from yt_dlp import YoutubeDL
 from yt_dlp.utils import download_range_func
+
+from ._constants import Dir
+from ._yt_ops import get_ops
 
 
 class Download:

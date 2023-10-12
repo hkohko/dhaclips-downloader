@@ -1,6 +1,6 @@
 from random import randint
 
-from _constants import Dir
+from ._constants import Dir
 
 
 def get_ops(custom_format, download_range_func, my_hook, ranges):

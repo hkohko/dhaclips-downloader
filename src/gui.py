@@ -1,5 +1,24 @@
 import PySimpleGUI as sG
 
+from core.main import Download
+
+
+def dl_videos(event: tuple[str, int], values):
+    _, group = event
+    url: str = values.get(("-URL-", group))
+    res: str = values.get(("-RES-", group))
+
+    start = values.get(("-FROM-", group))
+    end = values.get(("-TO-", group))
+
+    if start == "":
+        start = None
+    if end == "":
+        end = None
+
+    dl = Download(int(res.replace("p", "")))
+    dl.main(url, int(start), int(end))
+
 
 def main_frame(i):
     url_input = [
@@ -7,7 +26,14 @@ def main_frame(i):
             "https://www.youtube.com/watch?v=zr5coQfT9IM",
             size=(42, 10),
             key=("-URL-", i),
-        )
+        ),
+        sG.Combo(
+            values=("1080p", "720p", "480p", "360p"),
+            default_value=["1080p"],
+            readonly=True,
+            background_color="White",
+            key=("-RES-", i),
+        ),
     ]
     time_from_to = [
         sG.T("From:"),
@@ -40,10 +66,10 @@ def main():
         if event == "-ADDROW-":
             window.extend_layout(window["-FRAME-"], rows=main_frame(i))
             i += 1
-        # if isinstance(event, tuple):
-        #     check = sanitize_input(event, values)
-
-        print(event, values)
+        if isinstance(event, tuple):
+            #     check = sanitize_input(event, values)
+            if event[0] == "-DLBUTTON-":
+                dl_videos(event, values)
     window.close()
 
 
