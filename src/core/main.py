@@ -11,7 +11,7 @@ from ._yt_ops import get_ops
 
 
 class Download:
-    def __init__(self, res: int, ext: str = "mp4"):
+    def __init__(self, res: int, ext: str = None):
         self.res = res
         self.ext = ext
 
@@ -30,7 +30,7 @@ class Download:
                     f.get("vcodec") != "none",
                     f.get("acodec") == "none",
                     f.get("height") <= self.res,
-                    f.get("ext") == self.ext,
+                    f.get("ext") == self.ext if self.ext is not None else f.get("ext"),
                 )
             )
         )
@@ -50,9 +50,7 @@ class Download:
         )
         return best_audio_only
 
-    def custom_format(
-        self, ctx, res: int = 1080
-    ) -> Generator[dict[str, str], None, None]:
+    def custom_format(self, ctx) -> Generator[dict[str, str], None, None]:
         # sort from best to worst
         formats = ctx.get("formats")[::-1]
 
@@ -78,15 +76,31 @@ class Download:
         with open("hook.txt", "a") as file:
             json.dump(data, file)
 
-    def main(self, url, start: int | None = None, end: int | None = None):
-        ranges = (start, end)
-        self.create_dir()
-        dl_opts = get_ops(self.custom_format, download_range_func, self.my_hook, ranges)
+    def start_download(self, dl_opts, url, info_only=False):
+        if info_only:
+            with YoutubeDL(dl_opts) as ydl:
+                data = ydl.extract_info(url, download=False)
+                return data
         with YoutubeDL(dl_opts) as ydl:
             ydl.download(url)
+
+    def main(self, url, start: int | None = None, end: int | None = None):
+        self.create_dir()
+        if start is None:
+            start = 0
+        if end is None:
+            dl_opts = get_ops(
+                self.custom_format, download_range_func, self.my_hook, (None, None)
+            )
+            dur = self.start_download(dl_opts, url, info_only=True)
+            formats = dur.get("formats")
+            end = formats[0].get("fragments")[0].get("duration")
+        ranges = (start, end)
+        dl_opts = get_ops(self.custom_format, download_range_func, self.my_hook, ranges)
+        self.start_download(dl_opts, url)
 
 
 if __name__ == "__main__":
     url = dotenv_values(Dir.PROJ_DIR.joinpath(".env")).get("SAMPLE_URL")
-    dl = Download(1080, "mp4")
-    dl.main(url, 0, 100)
+    dl = Download(1080)
+    dl.main(url)
