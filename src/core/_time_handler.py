@@ -17,9 +17,11 @@ def check_hours(hours):
 
 
 def get_seconds(time_str):
+    if time_str == "":
+        return None
     if ":" not in time_str:
         if check_second(time_str):
-            return time_str
+            return abs(time_str)
     unpack = time_str.split(":")
     print(unpack)
     if len(unpack) == 2:
