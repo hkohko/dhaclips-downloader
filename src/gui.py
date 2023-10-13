@@ -18,6 +18,13 @@ def main():
     while True:
         event, values = window.read()
         if event == sG.WIN_CLOSED:
+            print(logic._tasks)
+            if len(logic._tasks) != 0:
+                for task in logic._tasks:
+                    try:
+                        task.result(timeout=0.1)
+                    except TimeoutError:
+                        pass
             break
         if event == "-ADDROW-":
             window.extend_layout(window["-FRAME-"], rows=main_frame(i))

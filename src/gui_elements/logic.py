@@ -1,4 +1,4 @@
-from threading import Thread
+from concurrent.futures import ThreadPoolExecutor
 
 import PySimpleGUI as sG
 from yt_dlp.utils._utils import YoutubeDLError
@@ -9,7 +9,7 @@ from src.core.main import Download
 
 class Logic:
     def __init__(self):
-        pass
+        self._tasks = []
 
     def _download_handler(
         self,
@@ -73,9 +73,14 @@ class Logic:
     def _spawn_threads(self, ranges, url, res, event, window):
         time_from = ranges[0]
         time_to = ranges[1]
-        task = Thread(
-            group=None,
-            target=self._download_handler,
-            args=(url, res, time_from, time_to, event, window),
+        executor = ThreadPoolExecutor()
+        task = executor.submit(
+            self._download_handler, url, res, time_from, time_to, event, window
         )
-        task.start()
+        self._tasks.append(task)
+        # task = Thread(
+        #     group=None,
+        #     target=self._download_handler,
+        #     args=(url, res, time_from, time_to, event, window),
+        # )
+        # task.start()
