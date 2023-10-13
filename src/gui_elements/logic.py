@@ -3,8 +3,8 @@ from concurrent.futures import ThreadPoolExecutor
 import PySimpleGUI as sG
 from yt_dlp.utils._utils import YoutubeDLError
 
-from src.core._time_handler import get_seconds
-from src.core.main import Download
+from core._time_handler import get_seconds
+from core.main import Download
 
 
 class Logic:
