@@ -1,7 +1,7 @@
 import PySimpleGUI as sG
 
 from gui_elements.elements import GUI
-from gui_elements.logic import dl_videos
+from gui_elements.logic import Logic
 
 
 def main_frame(i):
@@ -12,6 +12,7 @@ def main_frame(i):
 def main():
     sG.theme("SystemDefaultForReal")
     gui = GUI(0)
+    logic = Logic()
     window = sG.Window("dhaclips", gui.layout())
     i = 1
     while True:
@@ -23,7 +24,7 @@ def main():
             i += 1
         if isinstance(event, tuple):
             if event[0] == "-DLBUTTON-":
-                dl_videos(event, values, window)
+                logic.dl_videos(event, values, window)
     window.close()
 
 

@@ -23,7 +23,6 @@ def get_seconds(time_str):
         if check_second(time_str):
             return abs(time_str)
     unpack = time_str.split(":")
-    print(unpack)
     if len(unpack) == 2:
         mm, ss = unpack
         if all((check_second(ss), check_minutes(mm))):
