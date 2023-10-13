@@ -1,19 +1,19 @@
 def check_second(sec):
     if int(sec) < 60:
         return True
-    return False
+    raise ValueError
 
 
 def check_minutes(mins):
     if int(mins) < 60:
         return True
-    return False
+    raise ValueError
 
 
 def check_hours(hours):
     if int(hours) < 24:
         return True
-    return False
+    raise ValueError
 
 
 def get_seconds(time_str):
