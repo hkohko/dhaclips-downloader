@@ -21,17 +21,18 @@ class Logic:
         window,
     ):
         _, group = dlbutton
+        text_validurl = ("-VALIDURL-", group)
         window[dlbutton].update(disabled=True)
         try:
-            window[("-VALIDURL-", group)].update("")
+            window[text_validurl].update("")
             dl = Download(int(res.replace("p", "")))
-            window[("-VALIDURL-", group)].update("Downloading...")
+            window[text_validurl].update("Downloading...")
             dl.main(url, time_from, time_end)
+            window[text_validurl].update("Done!")
         except YoutubeDLError:
-            window[("-VALIDURL-", group)].update("!!Invalid URL!!")
+            window[text_validurl].update("!!Invalid URL!!")
         finally:
             window[dlbutton].update(disabled=False)
-            window[("-VALIDURL-", group)].update("Done!")
             return None
 
     def _sanitize_input(self, url, start, end):
@@ -78,9 +79,3 @@ class Logic:
             self._download_handler, url, res, time_from, time_to, event, window
         )
         self._tasks.append(task)
-        # task = Thread(
-        #     group=None,
-        #     target=self._download_handler,
-        #     args=(url, res, time_from, time_to, event, window),
-        # )
-        # task.start()

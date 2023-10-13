@@ -2,7 +2,6 @@ import json
 from collections.abc import Generator
 from pathlib import Path
 
-from dotenv import dotenv_values
 from yt_dlp import YoutubeDL
 from yt_dlp.utils import download_range_func
 
@@ -73,7 +72,7 @@ class Download:
         yield final_format
 
     def my_hook(self, data):
-        with open("hook.txt", "a") as file:
+        with open("hook.txt", "w") as file:
             json.dump(data, file)
 
     def start_download(self, dl_opts, url, info_only=False):
@@ -84,7 +83,13 @@ class Download:
         with YoutubeDL(dl_opts) as ydl:
             ydl.download(url)
 
-    def main(self, url, start: int | None = None, end: int | None = None):
+    def main(
+        self,
+        url,
+        start: int | None = None,
+        end: int | None = None,
+        info_only: bool = False,
+    ):
         self.create_dir()
         if start is None:
             start = 0
@@ -97,10 +102,7 @@ class Download:
             end = formats[0].get("fragments")[0].get("duration")
         ranges = (start, end)
         dl_opts = get_ops(self.custom_format, download_range_func, self.my_hook, ranges)
-        self.start_download(dl_opts, url)
-
-
-if __name__ == "__main__":
-    url = dotenv_values(Dir.PROJ_DIR.joinpath(".env")).get("SAMPLE_URL")
-    dl = Download(1080)
-    dl.main(url)
+        _ = self.start_download(dl_opts, url, info_only=info_only)
+        if info_only:
+            return _
+        return None
