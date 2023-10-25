@@ -14,6 +14,27 @@ pre-commit = "^3.4.0"
 python-dotenv = "^1.0.0"
 
 
+
+[tool.pdm.build]
+includes = []
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[project]
+authors = [
+    {name = "heko", email = "91366057+hkohko@users.noreply.github.com"},
+]
+license = {text = "MIT License"}
+requires-python = ">=3.11,<4.0"
+dependencies = [
+    "yt-dlp==2023.10.7",
+    "pysimplegui==4.60.5",
+    "pre-commit<4.0.0,>=3.4.0",
+    "python-dotenv<2.0.0,>=1.0.0",
+]
+name = "dhaclips-downloader"
+version = "0.0.1"
+description = "a YT video downloader app for clippers."
+readme = "README.md"
