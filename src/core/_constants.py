@@ -9,3 +9,4 @@ class Dir:
     TEMP_DL_DIR = PROJ_DIR.joinpath(".tempfile")
     DL_DIR = PROJ_DIR.joinpath("downloads")
     FFMPEG_DIR = SRC_DIR.joinpath("core", "ffmpeg")
+    FFMPEG_LINUX = PurePath("/", "usr", "bin")
