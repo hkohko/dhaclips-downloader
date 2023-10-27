@@ -1,5 +1,6 @@
 from random import randint
 from sys import platform
+
 from ._constants import Dir
 
 
